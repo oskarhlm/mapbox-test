@@ -1,5 +1,4 @@
-// @ts-ignore
-import mapboxgl from 'mapbox-gl'; // !mapbox-gl    eslint-disable-line import/no-webpack-loader-syntax
+import mapboxgl from 'mapbox-gl';
 import { NavigationControl } from 'mapbox-gl';
 import { useEffect, useRef, useState } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -43,31 +42,3 @@ const MapVanilla = () => {
 };
 
 export default MapVanilla;
-
-// const MapVanilla = () => {
-//   const mapContainer = useRef(null);
-//   // const map = useRef<Map>();
-//   const mapRef = useMap();
-
-//   const [lng, setLng] = useState(-70.9);
-//   const [lat, setLat] = useState(42.35);
-//   const [zoom, setZoom] = useState(9);
-
-//   useEffect(() => {
-//     if (mapRef.current) return; // initialize map only once
-//     mapRef.current = new mapboxgl.Map({
-//       container: mapContainer.current!,
-//       style: mapStyle,
-//       center: [lng, lat],
-//       zoom: zoom,
-//     });
-//     mapRef.current?.addControl(new NavigationControl(), 'bottom-right');
-//     mapRef.current?.on('moveend', () => console.log('moveend'));
-//   });
-
-//   return (
-//     <div>
-//       <div ref={mapContainer} className="map-container" />
-//     </div>
-//   );
-// };
