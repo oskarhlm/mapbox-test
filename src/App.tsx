@@ -3,6 +3,7 @@ import MapVanilla from './MapVanilla';
 import { MapProvider } from './MapContext';
 import HighLevelComponent from './HighLevelComponent';
 import StoryMap from './StoryMap';
+import StoryMapv2 from './StoryMapv2';
 
 const App = () => {
   return (
@@ -10,7 +11,8 @@ const App = () => {
       <MapProvider>
         {/* <HighLevelComponent />
         <MapVanilla /> */}
-        <StoryMap />
+        {/* <StoryMap /> */}
+        <StoryMapv2 />
       </MapProvider>
     </>
   );

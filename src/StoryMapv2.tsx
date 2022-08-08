@@ -1,13 +1,9 @@
 import mapboxgl, { CameraOptions } from 'mapbox-gl';
-import { NavigationControl } from 'mapbox-gl';
 import { useEffect, useRef, useState } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMap } from './hooks';
 import scrollama from 'scrollama';
-import ReactDOM from 'react-dom';
-import { createRoot } from 'react-dom/client';
 import { Button } from '@mui/material';
-import React from 'react';
 
 const mapStyle = 'mapbox://styles/keino/cl4gquaf0002i15jk5xldrn3u';
 const MAPBOX_TOKEN =
@@ -134,47 +130,6 @@ const StoryMap = () => {
       zoom: zoom,
       scrollZoom: false,
     });
-    newMap.addControl(new NavigationControl(), 'bottom-right');
-    newMap.on('moveend', () => console.log('moveend'));
-    configureScroller(newMap);
-    setMap(newMap);
-  });
-
-  const configureScroller = (map: mapboxgl.Map) => {
-    const story = document.getElementById('story');
-    const features = document.createElement('div');
-
-    features.classList.add('left');
-    features.setAttribute('id', 'features');
-
-    chapters.forEach((record: any, idx: number) => {
-      const container = document.createElement('div');
-      const root = createRoot(container);
-
-      container.classList.add('step');
-      if (idx === 0) container.classList.add('active');
-
-      const element = (
-        <div className="light">
-          <h3>{record.title}</h3>
-          <p>{record.description}</p>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => console.log('this nice')}
-          >
-            hihihihi
-          </Button>
-        </div>
-      );
-
-      root.render(element);
-
-      features.appendChild(container);
-    });
-
-    story?.appendChild(features);
-
     const scroller = scrollama();
     scroller
       .setup({
@@ -185,32 +140,42 @@ const StoryMap = () => {
       .onStepEnter((response) => {
         const chapter = chapters[response.index];
         response.element.classList.add('active');
-        map.flyTo(chapter.location);
-        // if (config.showMarkers) {
-        //   marker.setLngLat(chapter.location.center);
-        // }
-        // if (chapter.onChapterEnter.length > 0) {
-        //   chapter.onChapterEnter.forEach(setLayerOpacity);
-        // }
+        newMap.flyTo(chapter.location);
       })
       .onStepExit((response) => {
-        const chapter = chapters.find(
-          (chap: any) => chap.id === response.element.id
-        );
         response.element.classList.remove('active');
-        // if (chapter.onChapterExit.length > 0) {
-        //   chapter.onChapterExit.forEach(setLayerOpacity);
-        // }
       });
 
     window.addEventListener('resize', scroller.resize);
-  };
+    setMap(newMap);
+  });
 
   return (
     <div>
       <div id="test"></div>
       <div ref={mapContainer} id="map"></div>
-      <div id="story"></div>
+      <div id="story">
+        <div id="features">
+          {chapters.map((record, idx) => (
+            <div
+              key={record.id}
+              className={`step ${idx === 0 ? 'active' : ''}`}
+            >
+              <div className="light">
+                <h3>{record.title}</h3>
+                <p>{record.description}</p>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => console.log('this nice')}
+                >
+                  hihihihi
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
